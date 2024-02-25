@@ -8,9 +8,9 @@
     <BudgetListSort @onSortState="onSort" />
     <ElCard :header="header">
       <template v-if="!IsEmpty">
-        <div v-for="(item, prop) in list" :key="prop">
+        <div v-for="(item, prop) in budgetList" :key="prop">
           <BudgetListItem
-            :class="setShudow(item)"
+            :class="setShudow(item.type)"
             :list-item="item"
             @deleteItemId="broadcastItemId"
           />
@@ -34,6 +34,7 @@
 <script>
 import BudgetListItem from "@/components/BudgetListItem";
 import BudgetListSort from "@/components/BudgetListSort";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BudgestList",
@@ -46,15 +47,10 @@ export default {
     emptyTitle: "Empty List",
     itemVisibleClickButton: "ALL", // стартовое значение стоит ALL чтоб при первой загрузке все элементы списка отображались
   }),
-  props: {
-    list: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
   computed: {
+    ...mapGetters("list", ["budgetList"]), //приходит объект со списком, из которого потом формируется список
     IsEmpty() {
-      return !Object.keys(this.list).length;
+      return !Object.keys(this.budgetList).length;
     },
   },
   methods: {
@@ -70,11 +66,11 @@ export default {
       // принимаем из компоненты BudgetListSort значение кликнутой кнопки
       this.itemVisibleClickButton = clickState;
     },
-    setShudow(item) {
+    setShudow(type) {
       return {
         shudow:
-          item.type !== this.itemVisibleClickButton &&
-          "ALL" !== this.itemVisibleClickButton, // если значение нажатой кнопки совпадает с типом списка, класс не применяется к этому спису, а применя к списку где нет совпадений
+          type !== this.itemVisibleClickButton &&
+          "ALL" !== this.itemVisibleClickButton, // если значение нажатой кнопки совпадает с типом списка, класс не применяется к этому спису, а применяется к списку где нет совпадений
       };
     },
   },

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import list from "./modules/budgetList";
+import list from "./modules/list";
 
 Vue.use(Vuex);
 

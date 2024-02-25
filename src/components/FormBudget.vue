@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "FormBudget",
   data: () => {
@@ -75,11 +77,13 @@ export default {
                 ? Number("-" + String(newObj.value))
                 : newObj.value; // если число положительно, значит преобразуем в строку и конкатенируем с минусом, а потом преобразуем обратно в число, если отрицательно, оставляем как есть
           }
-          this.$emit("submitForm", newObj);
+          // this.$emit("submitForm", newObj);
+          this.addNewObjectList(newObj);
           this.$refs.addItemForm.resetFields();
         }
       });
     },
+    ...mapActions("list", ["addNewObjectList"]),
   },
 };
 </script>

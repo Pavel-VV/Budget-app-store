@@ -1,40 +1,30 @@
 <template>
-  <!-- <div>
-    <template v-if="total > 0">
-      <div class="total-value balance-positive">Total Balance: {{total}} </div>
-    </template>
-    <template v-else-if="total === 0">
-      <div class="total-value balance-neutral">Total Balance: {{total}} </div>
-    </template>
-    <template v-else>
-      <div class="total-value balance-negative">Total Balance: {{total}} </div>
-    </template>
-  </div> -->
   <div class="total-value" :class="balanceColor">
-    Total Balance: {{ total }}
+    Total Balance: {{ totalBalanceList }}
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "TotalBalance",
-  props: {
-    total: {
-      type: Number,
-      default: 0,
-    },
-  },
-  methods: {
-    // balanceColor(total) {
-    //   return total > 0 ? 'balance-positive' : total === 0 ? 'balance-neutral' : 'balance-negative';
-    // },
-  },
+  data: () => ({
+    total: "0",
+  }),
+  methods: {},
   computed: {
+    ...mapGetters("list", ["budgetList"]), // приходит объект со списком
+    totalBalanceList() {
+      return Object.values(this.budgetList).reduce((acc, item) => {
+        return acc + item.value;
+      }, 0);
+    },
     balanceColor() {
       return {
-        "balance-positive": this.total > 0,
-        "balance-neutral": this.total === 0,
-        "balance-negative": this.total < 0,
+        "balance-positive": this.totalBalanceList > 0,
+        "balance-neutral": this.totalBalanceList === 0,
+        "balance-negative": this.totalBalanceList < 0,
       };
     },
   },

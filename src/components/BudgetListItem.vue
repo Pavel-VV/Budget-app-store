@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "BudgetListItem",
   data: () => ({
@@ -33,10 +35,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions("list", ["deleteObjectList"]),
     deleteItem(id) {
       // if(!confirm('Вы уверены?')) return;
       this.dialogVisible = false;
-      this.$emit("deleteItemId", id); // прокидываем в компоненту budgetList id кликнутого item
+      this.deleteObjectList(id); //вызывается метод из state.list удаление объекта из списка по id
     },
     // typeIcon(value) {
     //   return value === "INCOME" ? "el-icon-top" : "el-icon-bottom";
