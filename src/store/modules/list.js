@@ -42,5 +42,5 @@ const listStore = {
     },
   },
 };
-//
+
 export default listStore;
